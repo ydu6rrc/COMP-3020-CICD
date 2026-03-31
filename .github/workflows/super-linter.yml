@@ -13,28 +13,24 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      # contents permission to clone the repository
       contents: read
       packages: read
-      # issues and pull-requests permissions to write results as pull
-      # request comments. Omit them if you don't need summary comments
       issues: write
       pull-requests: write
-      # To report GitHub Actions status checks. Omit if you don't need
-      # to update commit status
       statuses: write
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        # 修复：将 v5 替换为具体的 SHA 哈希值
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          # super-linter needs the full git history to get the
-          # list of files that changed across commits
           fetch-depth: 0
           persist-credentials: false
 
       - name: Super-linter
-        uses: super-linter/super-linter@v8.5.0 # x-release-please-version
+        # 修复：将 v8.5.0 替换为具体的 SHA 哈希值
+        uses: super-linter/super-linter@85f6a13e33c7062f83735706f95710c318286ec0 # v8.5.0
         env:
-          # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 可选修复：如果你不想让 README 的空格/格式问题导致报错，可以取消下面这行的注释
+          # VALIDATE_MARKDOWN_PRETTIER: false
