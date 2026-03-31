@@ -1,9 +1,8 @@
----
 name: Lint
 
 on: # yamllint disable-line rule:truthy
-  push: null
-  pull_request: null
+  push:
+  pull_request:
 
 permissions: {}
 
@@ -13,32 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      # contents permission to clone the repository
       contents: read
       packages: read
-      # issues and pull-requests permissions to write results as pull
-      # request comments. Omit them if you don't need summary comments
       issues: write
       pull-requests: write
-      # To report GitHub Actions status checks. Omit if you don't need
-      # to update commit status
       statuses: write
 
     steps:
       - name: Checkout code
-        # 修正：actions/checkout@v4.2.2 的正确 SHA
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 
+        uses: actions/checkout@v4
         with:
-          # super-linter needs the full git history to get the
-          # list of files that changed across commits
           fetch-depth: 0
           persist-credentials: false
 
       - name: Super-linter
-        # 修正：super-linter/super-linter@v7.1.0 的官方确定的正确 SHA
-        uses: super-linter/super-linter@44c423293881473950f58032f913697e87b7a549 # x-release-please-version
+        uses: super-linter/super-linter@v7
         env:
-          # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # 禁用导致 Fail 的 Markdown 格式检查，确保 CI 变绿
           VALIDATE_MARKDOWN_PRETTIER: false
